@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css"> </head>
+
+<body>
+    <div class="intro-con">
+        <h1>Wong Fook Hing Book Store</h1> </div>
+    <div class="container">
+        <div class="left-container">
+            <div class="item get-api">
+                <h3>Get Api Key</h3>
+                <button>Press to get Api Key</button> <span id="show-api-key">Shows API Key</span> </div>
+            <div class="item">
+                <div class="add-con">
+                    <h3> Add Book </h3>
+                    <div class="input-container">
+                        <input id="add-title" type="text" placeholder="Enter Title">
+                        <input id="add-author" type="text" placeholder="Enter Author">
+                        <button id="add-book-button">Add Book To List</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item">
+                <div class="delete-con">
+                    <h3>Delete Book</h3>
+                    <div class="input-container">
+                        <input id="delete-book" type="text" placeholder="Enter Book Id to delete">
+                        <button id="del-button">Delete</button>
+                    </div>
+                </div>
+            </div>
+            <div class="text-con"> <span class="action-text">Text for actions</span> </div>
+        </div>
+        <div class="right-container">
+            <div class="item">
+                <div class="google-con">
+                    <h3>Google Books</h3>
+                    <div class="input-container">
+                        <input type="text" placeholder="Enter Book Title">
+                        <button>Search</button>
+                    </div>
+                </div>
+            </div>
+            <div class="item view-con">
+                <h3>Google Books and Stored Books</h3>
+                <button id="view-books-button">View Stored Books</button>
+                <div class="view">
+                    <ul id="view-books-list"> </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="api.js"></script>
+</body>
+
+</html>

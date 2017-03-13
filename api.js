@@ -7,8 +7,9 @@ let viewBooksButton = document.getElementById('view-books-button');
 let viewListOfBooks = document.getElementById('view-books-list');
 let removeBook = document.getElementById('delete-book');
 let deleteButton = document.getElementById('del-button');
-let listOfBooks;
-let bookslistparsed;
+let bookClass = document.getElementsByClassName('book-class');
+//let listOfBooks;
+//let bookslistparsed;
 //function getApi() {
 //    let req = new XMLHttpRequest();
 //    req.open('GET', 'https://www.forverkliga.se/JavaScript/api/crud.php?requestKey');
@@ -26,10 +27,33 @@ let bookslistparsed;
 //    req.send();
 //}
 ////////Events
+addBookButton.setAttribute('disabled', 'true')
+
 addBookButton.addEventListener('click', addBooks);
 viewBooksButton.addEventListener('click', getBooks);
 deleteButton.addEventListener('click', deleteBooks);
-let bookClass = document.getElementsByClassName('book-class');
+
+addAuthor.addEventListener('keydown', function (e) {
+    if (addAuthor.value.length !== 0 && addTitle.value.length !== 0) {
+        addBookButton.removeAttribute('disabled');
+        addBookButton.className = '';
+    }
+    else{
+        addBookButton.setAttribute('disabled','true');
+        addBookButton.className = 'disabled';
+    }
+})
+addTitle.addEventListener('keydown', function (e) {
+    if (addAuthor.value.length !== 0 && addTitle.value.length !== 0) {
+        addBookButton.removeAttribute('disabled');
+        addBookButton.className = '';
+    }
+    else{
+        addBookButton.setAttribute('disabled','true');
+        addBookButton.className = 'disabled';
+    }
+})
+
 
 function deleteBooks() {
     let thisIdToRemove = removeBook.value;
@@ -38,19 +62,16 @@ function deleteBooks() {
     req.onreadystatechange = function (e) {
         if (req.readyState === 4 && req.status === 200) {
             jsonTextParse = JSON.parse(req.responseText);
-            
-            
-            if(jsonTextParse.status !== 'error'){
-                   console.log(jsonTextParse);
+            if (jsonTextParse.status !== 'error') {
+                console.log(jsonTextParse);
                 console.log('Borta!');
+                removeBook.value ='';
                 getBooks();
             }
             else {
                 deleteBooks();
             }
-        
-     
-            }
+        }
     }
     req.send();
 }
@@ -64,9 +85,13 @@ function editBooks(event) {
     newInput.value = editText;
     event.target.appendChild(newInput);
     newInput.focus();
-    newInput.addEventListener('blur', function () {
-        let thisElement = newInput.parentElement;
-        thisElement.innerHTML = newInput.value;
+    newInput.addEventListener('blur', updateEdit);
+
+    function updateEdit() {
+        let thisElement = event.target;
+        console.log(thisElement);
+        console.log(newInput);
+        thisElement.innerText = newInput.value;
         let test = thisElement.innerText.split(',');
         console.log(test);
         console.log(thisElement.id);
@@ -75,24 +100,27 @@ function editBooks(event) {
         req.open('POST', `https://www.forverkliga.se/JavaScript/api/crud.php?key=${key}&op=update&title=${test[0]}&author=${test[1]}&id=${thisElement.id}`);
         req.onreadystatechange = function (e) {
             if (req.readyState === 4 && req.status === 200) {
+                updateParse = JSON.parse(req.responseText)
+                console.log(updateParse);
+                if (updateParse.status != 'error') {
+                    console.log('Inne i edit med utan fel');
+                }
+                else {
+                    console.log('Inne i edit med med felmeddelande');
+                    updateEdit();
+                }
                 getBooks();
-                udateParse = JSON.parse(req.responseText)
-                console.log(udateParse);
-                //            if (bookslistparsed.status != 'error') {
-                //                console.log('Inne i edit med utan fel');
-                //                getBooks();
-                //            }
-                //            else {
-                //                console.log('Inne i edit med med felmeddelande');
-                //                editBooks();
-                //            }
             }
         };
         req.send();
-    })
+    }
 }
 
 function addBooks() {
+    if (addAuthor.value.length === 0 || addTitle.value.length === 0) {
+        event.preventDefault();
+        return;
+    }
     let book = `https://www.forverkliga.se/JavaScript/api/crud.php?key=${key}&op=select`;
     console.log(book)
     console.log(key)
@@ -103,7 +131,12 @@ function addBooks() {
             bookslistparsed = JSON.parse(req.responseText)
             if (bookslistparsed.status != 'error') {
                 //console.log('Inne i addbook med utan fel');
+                addAuthor.value = '';
+                addTitle.value = '';
+//                addBookButton.setAttribute('disabled', 'true');
                 getBooks();
+                addBookButton.setAttribute('disabled','true');
+                addBookButton.className = 'disabled';
             }
             else {
                 //console.log('Inne i addbook med med felmeddelande');
@@ -139,7 +172,7 @@ function getBooks() {
         if (req.readyState === 4 && req.status === 200) {
             listOfBooks = JSON.parse(req.responseText);
             if (listOfBooks.status != 'error') {
-                viewBooks();
+                viewBooks(listOfBooks);
                 //console.log('Bör visa böcker! Skickas nu till viewBook');
             }
             else {
