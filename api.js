@@ -28,18 +28,16 @@ let bookClass = document.getElementsByClassName('book-class');
 //}
 ////////Events
 addBookButton.setAttribute('disabled', 'true')
-
 addBookButton.addEventListener('click', addBooks);
 viewBooksButton.addEventListener('click', getBooks);
 deleteButton.addEventListener('click', deleteBooks);
-
 addAuthor.addEventListener('keydown', function (e) {
     if (addAuthor.value.length !== 0 && addTitle.value.length !== 0) {
         addBookButton.removeAttribute('disabled');
         addBookButton.className = '';
     }
-    else{
-        addBookButton.setAttribute('disabled','true');
+    else {
+        addBookButton.setAttribute('disabled', 'true');
         addBookButton.className = 'disabled';
     }
 })
@@ -48,12 +46,11 @@ addTitle.addEventListener('keydown', function (e) {
         addBookButton.removeAttribute('disabled');
         addBookButton.className = '';
     }
-    else{
-        addBookButton.setAttribute('disabled','true');
+    else {
+        addBookButton.setAttribute('disabled', 'true');
         addBookButton.className = 'disabled';
     }
 })
-
 
 function deleteBooks() {
     let thisIdToRemove = removeBook.value;
@@ -65,7 +62,7 @@ function deleteBooks() {
             if (jsonTextParse.status !== 'error') {
                 console.log(jsonTextParse);
                 console.log('Borta!');
-                removeBook.value ='';
+                removeBook.value = '';
                 getBooks();
             }
             else {
@@ -133,9 +130,9 @@ function addBooks() {
                 //console.log('Inne i addbook med utan fel');
                 addAuthor.value = '';
                 addTitle.value = '';
-//                addBookButton.setAttribute('disabled', 'true');
+                //                addBookButton.setAttribute('disabled', 'true');
                 getBooks();
-                addBookButton.setAttribute('disabled','true');
+                addBookButton.setAttribute('disabled', 'true');
                 addBookButton.className = 'disabled';
             }
             else {

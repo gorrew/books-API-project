@@ -149,12 +149,13 @@ input:activ {
 }
 
 .input-container > .disabled {
-    color:#fff;
+    color: #fff;
     border-color: #D94F4F;
     cursor: not-allowed;
 }
-.input-container > .disabled:hover{
-    color:#D94F4F; 
+
+.input-container > .disabled:hover {
+    color: #D94F4F;
 }
 
 .view-con {
