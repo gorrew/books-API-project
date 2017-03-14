@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book API</title>
+    <title>Book API Sample</title>
     <link rel="stylesheet" href="style.css"> </head>
 
 <body>
@@ -41,13 +41,14 @@
                 <div class="google-con">
                     <h3>Google Books</h3>
                     <div class="input-container">
-                        <input type="text" placeholder="Enter Book Title">
-                        <button>Search</button>
+                        <input id="input-google" type="text" placeholder="Enter Book Title">
+                        <button id="google-button">Search</button>
                     </div>
                 </div>
             </div>
             <div class="item view-con">
                 <h3>Google Books and Stored Books</h3>
+                <p>Click book for edit</p>
                 <button id="view-books-button">View Stored Books</button>
                 <div class="view">
                     <ul id="view-books-list"> </ul>
@@ -56,6 +57,7 @@
         </div>
     </div>
     <script src="api.js"></script>
+    <script src="gapi-book.js"> </script>
 </body>
 
 </html>
