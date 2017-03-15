@@ -14,7 +14,7 @@
         <div class="left-container">
             <div class="item get-api">
                 <h3>Get Api Key</h3>
-                <button>Press to get Api Key</button> <span id="show-api-key">Shows API Key</span> </div>
+                <button id="get-key">Press to get Api Key</button> <span id="show-api-key">Shows API Key</span> </div>
             <div class="item">
                 <div class="add-con">
                     <h3> Add Book </h3>
@@ -34,20 +34,21 @@
                     </div>
                 </div>
             </div>
-            <div class="text-con"> <span class="action-text">Text for actions</span> </div>
+            <div class="text-con"> <span id="show-info" class="action-text">Text for actions</span> </div>
         </div>
         <div class="right-container">
             <div class="item">
                 <div class="google-con">
                     <h3>Google Books</h3>
                     <div class="input-container">
-                        <input type="text" placeholder="Enter Book Title">
-                        <button>Search</button>
+                        <input id="input-google" type="text" placeholder="Enter Book Title">
+                        <button id="google-button">Search</button>
                     </div>
                 </div>
             </div>
             <div class="item view-con">
                 <h3>Google Books and Stored Books</h3>
+                <p>Click book for edit</p>
                 <button id="view-books-button">View Stored Books</button>
                 <div class="view">
                     <ul id="view-books-list"> </ul>
@@ -56,6 +57,7 @@
         </div>
     </div>
     <script src="api.js"></script>
+    <script src="gapi-book.js"> </script>
 </body>
 
 </html>
