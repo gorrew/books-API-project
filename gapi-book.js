@@ -6,7 +6,7 @@ let btn;
 function searchGoogleBook() {
     let req = new XMLHttpRequest();
     googleInput = document.getElementById('input-google').value;
-//    console.log('inne')
+    //    console.log('inne')
     let bookUrl = 'https://www.googleapis.com/books/v1/volumes?q=' + googleInput;
     console.log(bookUrl);
     req.onreadystatechange = function () {
@@ -24,12 +24,11 @@ function searchGoogleBook() {
     req.send();
 }
 
-
 function showGoogleBooks() {
     removeChildren(viewListOfBooks);
-//    console.log('kommer vi till Show?')
+    //    console.log('kommer vi till Show?')
     for (let i = 0; i < parsedData.items.length; i++) {
-//        console.log(parsedData + 'i show');
+        //        console.log(parsedData + 'i show');
         let createLi = document.createElement('li');
         createLi.className = 'google-li';
         createLi.innerHTML = parsedData.items[i].volumeInfo.title + ', ' + parsedData.items[i].volumeInfo.authors;
@@ -41,14 +40,13 @@ function showGoogleBooks() {
         viewListOfBooks.appendChild(createLi);
         btn.addEventListener('click', addGoogleBooks);
     }
-} 
+}
 
 function addGoogleBooks() {
     console.log('inne i add google book')
     console.log("target id", event.target);
     let book = `https://www.forverkliga.se/JavaScript/api/crud.php?key=${key}&op=insert&title=${parsedData.items[event.target.id].volumeInfo.title}&author=${parsedData.items[event.target.id].volumeInfo.authors}`;
     console.log(parsedData);
-    
     let req = new XMLHttpRequest();
     req.onreadystatechange = function () {
         if (req.readyState === 4 && req.status === 200) {
@@ -56,6 +54,12 @@ function addGoogleBooks() {
             if (bookslistparsed.status != 'error') {
                 console.log(bookslistparsed);
                 googleInput.value = '';
+                showElementStatus.style.color = '#A2BC55';
+                showElementStatus.innerHTML = 'Book Added To List'
+                setTimeout(function () {
+                    showElementStatus.innerHTML = '';
+                    showElementStatus.style.color = '#fff';
+                }, 3000);
                 getBooks();
             }
             else {

@@ -209,9 +209,11 @@ input:activ {
     .container .right-container {
         flex-basis: 100%;
     }
+/*
     .text-con {
         display: none;
     }
+*/
 }
 
 @media screen and (max-width:768px) {

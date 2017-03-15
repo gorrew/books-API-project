@@ -1,4 +1,5 @@
 let key = 'm3b6u';
+let showNewKey;
 let addTitle = document.getElementById('add-title');
 let addAuthor = document.getElementById('add-author');
 let updateBook = document.getElementById('update-book-button');
@@ -8,25 +9,30 @@ let viewListOfBooks = document.getElementById('view-books-list');
 let removeBook = document.getElementById('delete-book');
 let deleteButton = document.getElementById('del-button');
 let bookClass = document.getElementsByClassName('book-class');
+let showElementStatus = document.getElementById('show-info');
+let getKeyButton = document.getElementById('get-key');
+let showKey = document.getElementById('show-api-key');
 //let listOfBooks;
 //let bookslistparsed;
-//function getApi() {
-//    let req = new XMLHttpRequest();
-//    req.open('GET', 'https://www.forverkliga.se/JavaScript/api/crud.php?requestKey');
-//    req.onreadystatechange = function (e) {
-//        if (req.readyState === 4 && req.status === 200) {
-//            key = JSON.parse(req.responseText);
-//            console.log(key.key);
-//            key = key.key;
-//            addBooks();
-//        }
-//        console.log(key);
-//        console.log(req.readyState);
-//    };
-//   
-//    req.send();
-//}
-////////Events
+function getApi() {
+    let req = new XMLHttpRequest();
+    req.open('GET', 'https://www.forverkliga.se/JavaScript/api/crud.php?requestKey');
+    req.onreadystatechange = function (e) {
+        if (req.readyState === 4 && req.status === 200) {
+            showNewKey = JSON.parse(req.responseText);
+            console.log(showNewKey.key);
+            showNewKey = showNewKey.key;
+            if (showNewKey.status != 'error') {
+            showKey.innerHTML= 'New Key: ' + showNewKey;
+            }
+            else{
+                getApi();
+            }
+        }
+    };
+    req.send();
+}
+getKeyButton.addEventListener('click', getApi);
 addBookButton.setAttribute('disabled', 'true')
 addBookButton.addEventListener('click', addBooks);
 viewBooksButton.addEventListener('click', getBooks);
@@ -63,6 +69,12 @@ function deleteBooks() {
                 console.log(jsonTextParse);
                 console.log('Borta!');
                 removeBook.value = '';
+                showElementStatus.style.color='#D94F4F'
+                showElementStatus.innerHTML = 'Book Deleted From List'
+                setTimeout(function () {
+                    showElementStatus.innerHTML = '';
+                    showElementStatus.style.color = '#fff';
+                }, 3000);
                 getBooks();
             }
             else {
@@ -100,13 +112,20 @@ function editBooks(event) {
                 updateParse = JSON.parse(req.responseText)
                 console.log(updateParse);
                 if (updateParse.status != 'error') {
-                    console.log('Inne i edit med utan fel');
+//                    console.log('Inne i edit med utan fel');
+                    showElementStatus.style.color = '#FFAA2F';
+                showElementStatus.innerHTML = 'Book Updated'
+                setTimeout(function () {
+                    showElementStatus.innerHTML = '';
+                    showElementStatus.style.color = '#fff';
+                }, 3000);
+                    getBooks();
                 }
                 else {
-                    console.log('Inne i edit med med felmeddelande');
+//                    console.log('Inne i edit med med felmeddelande');
                     updateEdit();
                 }
-                getBooks();
+                
             }
         };
         req.send();
@@ -131,6 +150,12 @@ function addBooks() {
                 addAuthor.value = '';
                 addTitle.value = '';
                 //                addBookButton.setAttribute('disabled', 'true');
+                showElementStatus.style.color = '#A2BC55';
+                showElementStatus.innerHTML = 'Book Added To List'
+                setTimeout(function () {
+                    showElementStatus.innerHTML = '';
+                    showElementStatus.style.color = '#fff';
+                }, 3000);
                 getBooks();
                 addBookButton.setAttribute('disabled', 'true');
                 addBookButton.className = 'disabled';
@@ -148,13 +173,21 @@ function viewBooks() {
     console.log(listOfBooks);
     //console.log('viewBooks är kallad');
     //console.log('Ska skapa li element här i loopen nu');
+    let createLi;
     for (i = 0; i < listOfBooks.data.length; i++) {
-        let createLi = document.createElement('li');
+        createLi = document.createElement('li');
         createLi.id = listOfBooks.data[i].id;
+        let id = listOfBooks.data[i].id;
         createLi.className = 'book-class';
         createLi.innerHTML = listOfBooks.data[i].title + ', ' + listOfBooks.data[i].author;
         viewListOfBooks.appendChild(createLi);
         //console.log('Skapat li element från loopen nu');
+        createLi.addEventListener('mouseover', function () {
+            showElementStatus.innerHTML = "Enter This Book Id: " + id + ' To Delete Book';
+        })
+        createLi.addEventListener('mouseleave', function () {
+            showElementStatus.innerHTML = '';
+        })
     }
     //console.log('Finns li element?');
     for (let i = 0; i < bookClass.length; i++) {

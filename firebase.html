@@ -24,3 +24,108 @@
 </script>
 </body>
 </html>
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="description" content="Firebase DB test">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Firebase Database demo</title>
+
+	<style>
+		body > div {
+			border: 1px solid darkgray;
+			background-color: antiquewhite;
+		}
+		div {
+			border: 1px solid lightgray;
+			border-radius: 8px;
+			padding: 8px;
+			margin: 4px;
+		}
+	</style>
+	<script src="https://www.gstatic.com/firebasejs/3.7.1/firebase.js"></script>
+	<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyD08rUvwXqekM8YoFhQjGWbV7o3g5r6VvQ",
+			authDomain: "myproject-f7ec9.firebaseapp.com",
+			databaseURL: "https://myproject-f7ec9.firebaseio.com",
+			storageBucket: "myproject-f7ec9.appspot.com",
+			messagingSenderId: "133847088463"
+		};
+		firebase.initializeApp(config);
+	</script>
+
+</head>
+<body>
+	<h1>Firebase Database demo</h1>
+	<p>
+		Detta demo visar hur man kan använda Firebase realtidsdatabas. När
+		någon gör en ändring i databasen genereras ett event. Om man lagt
+		till en event listener kan man alltså få uppdateringar i realtid. <br>
+		Du kan lägga till ett ord och en beskrivning, som kommer sparas
+		i databasen och läggas till i en lista. Längst ner på sidan ser du
+		meddelanden om vad programmet gör.
+	</p>
+	<p>
+		Skriv in ett intressant ord! <br>
+		<input type="text" id="inputWord" placeholder="ditt ord"/> <br>
+		<input type="text" id="inputDescribe" placeholder="Varför är det intressant?"/> <br>
+		<button id="btnSaveWord">Spara ord i databasen</button>
+	</p>
+	
+	<!-- Här kommer nya ord att läggas till -->
+	<ul id="listWords"></ul>
+	
+	<!-- Meddelanden som handlar om vad applikationen gör -->
+	<div id="messages"><strong>Meddelanden</strong></div>
+	
+	
+	<script type="text/javascript">
+		// För att garantera att inga DOM-element är null
+		window.addEventListener('load', function() {
+			// Hjälpfunktion
+			function addMessage(msg) {
+				let msgDiv = document.getElementById('messages');
+				msgDiv.innerHTML += `<div>${msg}</div> `;
+			}
+
+			// Spara intressant ord till databasen
+			let iWord = document.getElementById('inputWord');
+			let iDescribe = document.getElementById('inputDescribe');
+			let bSaveWord = document.getElementById('btnSaveWord');
+			console.log('3 element:', iWord,iDescribe,bSaveWord);
+			bSaveWord.addEventListener('click', function(event) {
+				let word = iWord.value;
+				let text = iDescribe.value;
+				firebase.database().ref('words/' + word).set({
+					text: text
+				});
+				addMessage(`Sparar ${word}=${text} i databasen...`);
+			});
+
+			// Visa innehållet i databasen så fort det ändras
+			firebase.database().ref('words/').on('value', function(snapshot) {
+				// Event listener is activated when loaded and
+				// every time the database changes
+				addMessage('Databasen -words- laddades eller ändrades.');
+				let dataobject = snapshot.val();
+				let viewWords = document.getElementById('listWords');
+				viewWords.innerHTML = '';  // ta bort gamla ord från listan
+				for( let prop in dataobject ) {
+					let li = document.createElement('li');
+					li.innerHTML = `${prop}: ${dataobject[prop].text}`;
+					viewWords.appendChild(li);
+				}
+			});
+		});
+	</script>
+</body>
+</html>
